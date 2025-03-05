@@ -1,0 +1,26 @@
+# Data handling and processing
+pandas
+numpy
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# Statistical modeling
+statsmodels
+
+# Machine Learning models
+scikit-learn
+xgboost
+lightgbm
+
+# API requests and environment variables
+requests
+python-dotenv
+
+# Time handling
+datetime
+
+# Ensure compatibility with VS Code and execution environments
+os
