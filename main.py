@@ -1,8 +1,9 @@
 import os
+import pandas as pd
 from load_data import DataLoader
 from preprocess import DataPreprocessor
 from forecast import Forecasting
-import pandas as pd
+from eda import ExploratoryDataAnalysis 
 
 # Define directories
 DATA_DIR = "data"
@@ -17,7 +18,11 @@ def main():
     preprocessor = DataPreprocessor()
     preprocessor.run()
 
-    print("\n=== Step 3: Forecasting ===")
+    print("\n=== Step 3: Exploratory Data Analysis ===")
+    eda = ExploratoryDataAnalysis()
+    eda.run()  # Run the EDA process
+
+    print("\n=== Step 4: Forecasting ===")
     forecaster = Forecasting()
     forecaster.best_model_forecast()
 
