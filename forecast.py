@@ -10,7 +10,6 @@ from xgboost import XGBRegressor
 from lightgbm import LGBMRegressor
 from sklearn.preprocessing import StandardScaler
 
-# Define directories
 DATA_DIR = "data"
 FORECAST_DIR = os.path.join(DATA_DIR, "forecast")
 os.makedirs(FORECAST_DIR, exist_ok=True)
@@ -24,7 +23,7 @@ class Forecasting:
         self.scale_data()
 
     def load_data(self):
-        """Loads the preprocessed exchange rate data and ensures proper datetime index."""
+        """Loads the preprocessed exchange rate data and ensures proper datetime index"""
         df = pd.read_csv(self.file_path, parse_dates=["date"], index_col="date")
 
         # Ensure daily frequency
@@ -34,7 +33,7 @@ class Forecasting:
         return df
 
     def split_data(self):
-        """Splits data into training and testing sets using differenced prices."""
+        """Splits data into training and testing sets"""
         train_size = int(len(self.df) * 0.8)
 
         # Ensure 'diff_close' exists
@@ -51,10 +50,10 @@ class Forecasting:
         return train, test
 
     def scale_data(self):
-        """Scales numerical features."""
+        """Scales numerical features"""
         feature_columns = [
             "ma_7", "volatility_10", "volatility_ratio_10",
-            "lag_1", "trend_5", "gdp_growth", "trade_balance", "inflation"
+            "lag_1", "trend_5", "inflation" 
         ]
 
         self.train.loc[:, feature_columns] = self.scaler.fit_transform(self.train[feature_columns].copy())
@@ -63,7 +62,7 @@ class Forecasting:
         print("Feature scaling applied.")
 
     def evaluate_model(self, y_true, y_pred):
-        """Computes model evaluation metrics."""
+        """Computes model evaluation metrics"""
         valid_mask = ~np.isnan(y_true) & ~np.isnan(y_pred)
         y_true, y_pred = y_true[valid_mask], y_pred[valid_mask]
 
@@ -75,7 +74,7 @@ class Forecasting:
         return mse, mae, r2
 
     def run_model(self, model, model_name):
-        """Generic function to train and evaluate a model."""
+        """Function to train and evaluate a model"""
         X_train, y_train = self.train.drop(columns=["diff_close"]), self.train["diff_close"]
         X_test = self.test.drop(columns=["diff_close"])
 
@@ -90,7 +89,7 @@ class Forecasting:
         return self.evaluate_model(self.test["close"], predictions), predictions
 
     def compare_models(self):
-        """Trains and compares models."""
+        """Trains and compares models"""
         results = {}
         predictions = {}
 
@@ -114,7 +113,7 @@ class Forecasting:
         return results, predictions
 
     def best_model_forecast(self):
-        """Finds the best model and generates forecast."""
+        """Finds the best model and generates forecast"""
         results, predictions = self.compare_models()
         self.best_model = min(results, key=lambda x: results[x][0])
         print(f"Best Model: {self.best_model}")
@@ -134,7 +133,7 @@ class Forecasting:
         self.print_next_day_forecast(forecast_df)
 
     def print_next_day_forecast(self, forecast_df):
-        """Prints the predicted value for the next day."""
+        """Prints the predicted value for the next day"""
         next_day = forecast_df["date"].max() + pd.Timedelta(days=1)
         next_day_prediction = forecast_df["forecast"].iloc[-1]
 
@@ -144,7 +143,7 @@ class Forecasting:
         print(prediction_df.to_string(index=False))
 
     def plot_actual_vs_predicted(self):
-        """Plots Actual vs Predicted values."""
+        """Plots Actual vs Predicted values"""
         forecast_path = os.path.join(FORECAST_DIR, "best_model_forecast.csv")
 
         forecast_df = pd.read_csv(forecast_path)
@@ -169,7 +168,7 @@ class Forecasting:
         plt.show()
 
     def plot_future_forecast(self, future_days=30):
-        """Plots future predictions for the next given days."""
+        """Plots future predictions for the next given days"""
         last_date = self.test.index.max()
         future_dates = pd.date_range(start=last_date, periods=future_days + 1, freq="D")[1:]
 

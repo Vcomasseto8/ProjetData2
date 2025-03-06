@@ -9,7 +9,6 @@ from statsmodels.graphics.tsaplots import plot_acf
 import plotly.express as px
 import plotly.graph_objects as go
 
-# Define directories
 DATA_DIR = "data"
 EDA_DIR = os.path.join(DATA_DIR, "eda")
 os.makedirs(EDA_DIR, exist_ok=True)
@@ -20,7 +19,7 @@ class ExploratoryDataAnalysis:
         self.df = self.load_data()
 
     def load_data(self):
-        """Loads preprocessed data and handles missing values."""
+        """Loads preprocessed data and handles missing values"""
         print("Loading preprocessed data for EDA...")
         df = pd.read_csv(self.file_path, parse_dates=["date"], index_col="date")
         df = df.asfreq("D")
@@ -28,7 +27,7 @@ class ExploratoryDataAnalysis:
         return df
 
     def save_summary_statistics(self):
-        """Saves summary statistics and missing values."""
+        """Saves summary statistics and missing values"""
         print("Saving summary statistics and missing values report...")
         summary_stats = self.df.describe()
         summary_stats.to_csv(os.path.join(EDA_DIR, "summary_statistics.csv"))
@@ -37,13 +36,13 @@ class ExploratoryDataAnalysis:
         missing_values.to_csv(os.path.join(EDA_DIR, "missing_values.csv"))
 
     def plot_exchange_rate_trend(self):
-        """Plots and saves exchange rate trend."""
+        """Plots and saves exchange rate trend"""
         print("Generating exchange rate trend visualization...")
         fig = px.line(self.df, x=self.df.index, y="close", title="BRL/EUR Exchange Rate Trend")
         fig.write_html(os.path.join(EDA_DIR, "exchange_rate_trend.html"))
 
     def plot_bollinger_bands(self):
-        """Computes and plots Bollinger Bands."""
+        """Computes and plots Bollinger Bands"""
         print("Generating Bollinger Bands visualization...")
         self.df["ma_20"] = self.df["close"].rolling(window=20).mean()
         self.df["std_20"] = self.df["close"].rolling(window=20).std()
@@ -57,7 +56,7 @@ class ExploratoryDataAnalysis:
         fig_bollinger.write_html(os.path.join(EDA_DIR, "bollinger_bands.html"))
 
     def plot_correlation_matrix(self):
-        """Plots and saves correlation matrix."""
+        """Plots and saves correlation matrix"""
         print("Generating feature correlation matrix...")
         plt.figure(figsize=(12, 8))
         sns.heatmap(self.df.corr(), annot=True, fmt=".2f", cmap="coolwarm", linewidths=0.5)
@@ -66,14 +65,14 @@ class ExploratoryDataAnalysis:
         plt.close()
 
     def plot_volatility_trend(self):
-        """Computes and plots volatility trend."""
+        """Computes and plots volatility trend"""
         print("Generating volatility trend visualization...")
         self.df["volatility"] = self.df["close"].pct_change().rolling(window=30).std()
         fig_volatility = px.line(self.df, x=self.df.index, y="volatility", title="Volatility Trend (30-day Rolling)")
         fig_volatility.write_html(os.path.join(EDA_DIR, "volatility_trend.html"))
 
     def plot_time_series_decomposition(self):
-        """Performs and saves time series decomposition."""
+        """Performs and saves time series decomposition"""
         print("Performing time series decomposition...")
         decomposition = seasonal_decompose(self.df["close"], model="multiplicative", period=30)
         fig, axes = plt.subplots(4, 1, figsize=(12, 10), sharex=True)
@@ -86,7 +85,7 @@ class ExploratoryDataAnalysis:
         plt.close()
 
     def plot_log_returns_distribution(self):
-        """Computes and plots log returns distribution."""
+        """Computes and plots log returns distribution"""
         print("Generating log returns distribution plot...")
         self.df["log_returns"] = np.log(self.df["close"] / self.df["close"].shift(1))
         plt.figure(figsize=(10, 6))
@@ -96,7 +95,7 @@ class ExploratoryDataAnalysis:
         plt.close()
 
     def plot_acf_returns(self):
-        """Plots and saves autocorrelation function of returns."""
+        """Plots and saves autocorrelation function of returns"""
         print("Generating autocorrelation plot of returns...")
         plt.figure(figsize=(10, 6))
         plot_acf(self.df["log_returns"].dropna(), lags=30)
@@ -105,19 +104,14 @@ class ExploratoryDataAnalysis:
         plt.close()
 
     def plot_moving_averages(self):
-        """Plots and saves moving averages."""
+        """Plots and saves moving averages"""
         print("Generating moving averages plot...")
         fig_ma = px.line(self.df, x=self.df.index, y=["close", "ma_20"], title="Moving Averages")
         fig_ma.write_html(os.path.join(EDA_DIR, "moving_averages.html"))
-
-    def plot_macro_analysis(self):
-        """Plots and saves macroeconomic indicators over time."""
-        print("Generating macroeconomic indicators visualization...")
-        fig_macro = px.line(self.df, x=self.df.index, y=["inflation", "gdp_growth", "trade_balance"], title="Macroeconomic Indicators Over Time")
-        fig_macro.write_html(os.path.join(EDA_DIR, "macro_analysis.html"))
+        
 
     def run(self):
-        """Runs all EDA steps sequentially."""
+        """Runs all EDA steps sequentially"""
         print("\n=== Starting Exploratory Data Analysis (EDA) ===")
         self.save_summary_statistics()
         self.plot_exchange_rate_trend()
@@ -128,8 +122,7 @@ class ExploratoryDataAnalysis:
         self.plot_log_returns_distribution()
         self.plot_acf_returns()
         self.plot_moving_averages()
-        self.plot_macro_analysis()
-        print("✅ EDA completed. All visualizations saved in 'eda' directory.")
+        print("EDA completed. All visualizations saved in 'eda' directory.")
 
 # Run EDA if executed directly
 if __name__ == "__main__":

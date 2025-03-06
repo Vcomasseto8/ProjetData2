@@ -39,7 +39,7 @@ class DataLoader:
         self.macro_data = None
 
     def fetch_exchange_rate(self, from_currency="EUR", to_currency="BRL"):
-        """Fetches historical exchange rate data from Alpha Vantage."""
+        """Fetches historical exchange rate data from Alpha Vantage"""
         print("Fetching exchange rate data...")
 
         params = {
@@ -77,10 +77,9 @@ class DataLoader:
         print("Fetching macroeconomic indicators...")
 
         indicators = {
-            "inflation": "FPCPITOTLZGUSA",  # US Inflation Rate
-            "interest_rate": "FEDFUNDS",  # US Federal Funds Rate
-            "gdp_growth": "A191RL1Q225SBEA",  # US Real GDP Growth
-            "trade_balance": "BOPGSTB"  # US Trade Balance
+            "inflation": "BRACPIALLMINMEI",  # BRL Inflation Rate
+            "interest_rate": "IRSTCI01BRM156N",  # SELIC Rates
+    
         }
 
         macro_df = pd.DataFrame()
