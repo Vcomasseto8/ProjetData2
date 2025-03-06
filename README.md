@@ -15,12 +15,16 @@ The pipeline consists of:
 📁 data/             # Contains raw and processed data
     📁 eda/              # Stores exploratory data analysis outputs
     📁 forecast/         # Stores model forecasts and comparison results
-📜 load_data.py      # Fetches financial and macroeconomic data
-📜 preprocess.py     # Cleans data and generates features for ML
-📜 eda.py            # Performs exploratory data analysis
-📜 forecast.py       # Runs ML models and generates forecasts
+    📁 preprocess/       # Stores preprocess csv
+    📁 raw/              # Stores raws csvs
+📁 src/ 
+    📜 load_data.py      # Fetches financial and macroeconomic data
+    📜 preprocess.py     # Cleans data and generates features for ML
+    📜 eda.py            # Performs exploratory data analysis
+    📜 forecast.py       # Runs ML models and generates forecasts
 📜 main.py           # Main script executing the full pipeline
 📜 requirements.txt  # Lists dependencies
+⚙.env                # Stores the API's keys
 
 🔧 Installation & Setup
 
@@ -33,18 +37,14 @@ Pip
 Setup Instructions
 
 # Clone the repository
-git clone https://github.com/your-repo-name.git
-cd your-repo-name
-
-# Create a virtual environment
-python -m venv venv
-source venv/bin/activate  # (Windows: `venv\Scripts\activate`)
+git clone (https://github.com/Vcomasseto8/ProjetData2)
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Set up API keys in a .env file
 echo "ALPHA_VANTAGE_API_KEY=your_api_key" > .env
+echo "FRED_API_KEY" = your_api_key" > .env
 
 ▶ How to Run the Project
 
@@ -76,37 +76,12 @@ Feature engineering for financial time series
 
 Exploratory Data Analysis (EDA) with visualizations
 
-Multiple ML models (Random Forest, XGBoost, LightGBM, etc.)
+Multiple ML models (Linear Regression, LinearRegression, Ridge Regression, 
+                    Lasso Regression, Random Forest, XGBoost LightGBM)
 
 Performance comparison & model selection
 
 Forecast generation and evaluation
-
-📉 Machine Learning Models Used
-
-Model
-
-Type
-
-Linear Regression
-
-ML
-
-Random Forest
-
-ML
-
-XGBoost
-
-ML
-
-LightGBM
-
-ML
-
-Prophet
-
-ML
 
 📈 Outputs & Results
 
@@ -130,10 +105,12 @@ Improve model performance with feature selection
 
 Add deep learning models (LSTMs, Transformers)
 
-Deploy as a web app using Flask/FastAPI + Streamlit
-
 🤝 Contributors & Contact
 
-Your Name (@yourgithub) – LinkedIn
+Vitoria Comasseto (@Vcomasseto8) – www.linkedin.com/in/vitoria-comasseto
+Carolina Alexandra Urtubia (@totaurt) - www.linkedin.com/in/curtubia/
+Henriqu Viola Carvalho (@hqviolake) - www.linkedin.com/in/hviolac/
+Martin Interlurralde Spiniello (@) - www.linkedin.com/in/mart%C3%ADn-iturralde-spiniello-12084b239/
+
 
 Open to contributions! Feel free to submit a pull request.
