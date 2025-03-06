@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-from load_data import DataLoader
-from preprocess import DataPreprocessor
-from forecast import Forecasting
-from eda import ExploratoryDataAnalysis 
+from src.load_data import DataLoader
+from src.preprocess import DataPreprocessor
+from src.forecast import Forecasting
+from src.eda import ExploratoryDataAnalysis 
 
 # Define directories
 DATA_DIR = "data"

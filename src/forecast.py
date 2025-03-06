@@ -12,10 +12,11 @@ from sklearn.preprocessing import StandardScaler
 
 DATA_DIR = "data"
 FORECAST_DIR = os.path.join(DATA_DIR, "forecast")
+PREPROCESS_DIR = os.path.join(DATA_DIR, "preprocess") 
 os.makedirs(FORECAST_DIR, exist_ok=True)
-
+ 
 class Forecasting:
-    def __init__(self, file_path=os.path.join(DATA_DIR, "preprocessed_data.csv")):
+    def __init__(self, file_path=os.path.join(PREPROCESS_DIR, "preprocessed_data.csv")):
         self.file_path = file_path
         self.df = self.load_data()
         self.train, self.test = self.split_data()

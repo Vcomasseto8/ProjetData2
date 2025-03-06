@@ -2,20 +2,23 @@ import os
 import pandas as pd
 import numpy as np
 
-# Define data directory
-DATA_DIR = "data"
-os.makedirs(DATA_DIR, exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
+DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+RAW_DIR = os.path.join(DATA_DIR, "raw")  
+PREPROCESS_DIR = os.path.join(DATA_DIR, "preprocess")  
+os.makedirs(PREPROCESS_DIR, exist_ok=True)
 
 class DataPreprocessor:
-    def __init__(self, file_path=os.path.join(DATA_DIR, "exchange_rates.csv"), 
-                 macro_path=os.path.join(DATA_DIR, "macro_data.csv"),
-                 output_path=os.path.join(DATA_DIR, "preprocessed_data.csv")):
+    def __init__(self, 
+                 file_path=os.path.join(RAW_DIR, "exchange_rates.csv"), 
+                 macro_path=os.path.join(RAW_DIR, "macro_data.csv"),
+                 output_path=os.path.join(PREPROCESS_DIR, "preprocessed_data.csv")):
         self.file_path = file_path
         self.macro_path = macro_path
         self.output_path = output_path
 
     def load_data(self):
-        """Loads exchange rate data, ensuring 'date' column exists and is properly formatted."""
+        """Loads exchange rate data, ensuring 'date' column exists and is properly formatted"""
         df = pd.read_csv(self.file_path)
 
         # Check if 'date' exists as a column
@@ -101,6 +104,8 @@ class DataPreprocessor:
             print("Dropping 'interest_rate' column due to excessive missing values...")
             df.drop(columns=["interest_rate"], inplace=True)
 
+
+
         # Reset index to ensure 'date' is saved as a column
         df.reset_index(inplace=True)
 
@@ -121,7 +126,7 @@ class DataPreprocessor:
         print(" Adding new features...")
         df = self.add_features(df)
 
-        print(" Adding macroeconomic data (Inflation, Interest Rate, GDP Growth, Trade Balance)...")
+        print(" Adding macroeconomic data (Inflation, Interest Rate)...")
         df = self.add_macro_data(df)
         
         print(" Saving final preprocessed dataset...")

@@ -18,11 +18,12 @@ if not FRED_API_KEY:
 
 # Define directories
 DATA_DIR = "data"
-os.makedirs(DATA_DIR, exist_ok=True)
+RAW_DIR = os.path.join(DATA_DIR, "raw")
+os.makedirs(RAW_DIR, exist_ok=True)
 
 # Define file paths
-EXCHANGE_FILE = os.path.join(DATA_DIR, "exchange_rates.csv")
-MACRO_FILE = os.path.join(DATA_DIR, "macro_data.csv")
+EXCHANGE_FILE = os.path.join(RAW_DIR, "exchange_rates.csv")
+MACRO_FILE = os.path.join(RAW_DIR, "macro_data.csv")
 
 # Define API URLs
 EXCHANGE_RATE_URL = "https://www.alphavantage.co/query"

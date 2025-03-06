@@ -9,12 +9,15 @@ from statsmodels.graphics.tsaplots import plot_acf
 import plotly.express as px
 import plotly.graph_objects as go
 
-DATA_DIR = "data"
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
+DATA_DIR = os.path.join(BASE_DIR, "..", "data") 
 EDA_DIR = os.path.join(DATA_DIR, "eda")
+PREPROCESS_DIR = os.path.join(DATA_DIR, "preprocess")  
 os.makedirs(EDA_DIR, exist_ok=True)
 
 class ExploratoryDataAnalysis:
-    def __init__(self, file_path=os.path.join(DATA_DIR, "preprocessed_data.csv")):
+    def __init__(self, file_path=os.path.join(PREPROCESS_DIR, "preprocessed_data.csv")):
         self.file_path = file_path
         self.df = self.load_data()
 
