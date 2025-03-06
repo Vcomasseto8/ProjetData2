@@ -26,13 +26,24 @@ def main():
     forecaster = Forecasting()
     forecaster.best_model_forecast()
 
-    # Load the forecasted data and display the next day's prediction
+        # Load the forecasted data and display the next days' predictions
     forecast_file = os.path.join(DATA_DIR, "forecast", "best_model_forecast.csv")
+
     if os.path.exists(forecast_file):
-        forecast_df = pd.read_csv(forecast_file)
-        next_day_forecast = forecast_df.iloc[-1]  # Last row is the most recent prediction
-        print("\n=== Next Day Predicted Exchange Rate ===")
-        print(next_day_forecast)
+        forecast_df = pd.read_csv(forecast_file, parse_dates=["date"])
+
+        # Último valor real disponível (última linha onde 'actual' não é NaN)
+        last_actual_value = forecast_df.dropna(subset=["actual"]).iloc[-1]
+
+        # Selecionar apenas as previsões futuras (onde 'actual' é NaN)
+        future_forecasts = forecast_df[forecast_df["actual"].isna()]
+
+        print("\n=== Exchange Rate Predictions for the Next Days ===")
+        print(f"Last Actual Exchange Rate: {last_actual_value['date'].date()} → {last_actual_value['actual']:.4f}\n")
+        
+        # Exibir todas as previsões futuras
+        print(future_forecasts[['date', 'forecast']].to_string(index=False))
+
 
 if __name__ == "__main__":
     main()

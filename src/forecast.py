@@ -90,9 +90,10 @@ class Forecasting:
         return self.evaluate_model(self.test["close"], predictions), predictions
 
     def compare_models(self):
-        """Trains and compares models"""
+        """Trains and compares models, storing the trained models in self.models"""
         results = {}
         predictions = {}
+        self.models = {}  # Dicionário para armazenar os modelos treinados
 
         models = {
             "Linear Regression": LinearRegression(),
@@ -105,6 +106,7 @@ class Forecasting:
 
         for name, model in models.items():
             results[name], predictions[name] = self.run_model(model, name)
+            self.models[name] = model  # Armazena o modelo treinado na classe
 
         # Save model comparison to CSV
         results_df = pd.DataFrame(results, index=["MSE", "MAE", "R²"]).T
@@ -113,25 +115,46 @@ class Forecasting:
 
         return results, predictions
 
-    def best_model_forecast(self):
-        """Finds the best model and generates forecast"""
+
+    def best_model_forecast(self, future_days=5):
+        """Finds the best model and generates forecast for test data and future days"""
+        
         results, predictions = self.compare_models()
-        self.best_model = min(results, key=lambda x: results[x][0])
+        self.best_model = min(results, key=lambda x: results[x][0])  # Escolhe o modelo com menor MSE
         print(f"Best Model: {self.best_model}")
 
+        # Previsão para os dados de teste
         forecast_df = pd.DataFrame({
             "date": self.test.index,
             "actual": self.test["close"],
             "forecast": predictions[self.best_model]
         })
+
+        # **Gerar previsões para os próximos 'future_days'**
+        future_dates = pd.date_range(start=self.test.index.max(), periods=future_days + 1, freq="D")[1:]
+        future_predictions = []
+
+        last_known_value = self.test["close"].iloc[-1]  # Último valor conhecido
+
+        for _ in range(future_days):
+            future_input = self.test.drop(columns=["diff_close"]).iloc[-1].values.reshape(1, -1)
+            predicted_diff = self.models[self.best_model].predict(future_input)[0]  # Agora self.models existe
+            last_known_value += predicted_diff  # Reverter a diferenciação
+            future_predictions.append(last_known_value)
+
+        # Criar DataFrame com as previsões futuras
+        future_df = pd.DataFrame({"date": future_dates, "forecast": future_predictions})
+
+        # **Concatenar previsões no arquivo CSV**
+        full_forecast_df = pd.concat([forecast_df, future_df], ignore_index=True)
+
+        # Salvar previsões no CSV
         forecast_path = os.path.join(FORECAST_DIR, "best_model_forecast.csv")
-        forecast_df.to_csv(forecast_path, index=False)
+        full_forecast_df.to_csv(forecast_path, index=False)
 
-        print(f"Saved forecast data: {forecast_path}")
+        print(f"Saved extended forecast data: {forecast_path}")
 
-        self.plot_actual_vs_predicted()
-        self.plot_future_forecast()
-        self.print_next_day_forecast(forecast_df)
+
 
     def print_next_day_forecast(self, forecast_df):
         """Prints the predicted value for the next day"""
