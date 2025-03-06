@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copy the application files
-COPY . .
+COPY predict.py /app/
+
 
 # Install dependencies first to leverage Docker's caching
 COPY requirements.txt .
