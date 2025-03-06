@@ -1,6 +1,8 @@
 import os
 import pandas as pd
 from fastapi import FastAPI
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "src")))
 from src.load_data import DataLoader
 from src.preprocess import DataPreprocessor
 from src.forecast import Forecasting
