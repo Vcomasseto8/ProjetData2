@@ -73,7 +73,7 @@ class DataLoader:
         self.exchange_data = df
 
     def fetch_macro_data(self):
-        """Fetches inflation, interest rate, GDP growth, and trade balance from FRED API."""
+        """Fetches inflation and interest rate from FRED API"""
         print("Fetching macroeconomic indicators...")
 
         indicators = {
