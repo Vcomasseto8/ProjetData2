@@ -1,8 +1,15 @@
 services:
-  - type: web
-    name: exchange-api
+  - type: cron
+    name: exchange-rate-forecast
     env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python src/forecast.py"
+    schedule: "0 0 * * *"  # Roda uma vez por dia à meia-noite (UTC)
+  - type: web
+    name: exchange-rate-api
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn src.predict:app --host 0.0.0.0 --port 8000"
     plan: free
-    region: oregon
-    buildCommand: "./build.sh"
-    startCommand: "python main.py"
+
+
