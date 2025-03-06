@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  exchange-api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app  # Sync local files to the container
+    environment:
+      - PYTHONUNBUFFERED=1
