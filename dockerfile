@@ -20,4 +20,4 @@ RUN pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
 EXPOSE 8000
 
 # Command to run the application
-CMD ["python", "main.py"]
+CMD ["uvicorn", "predict:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -2,6 +2,11 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+
+# Use non-interactive backend to avoid GUI errors
+matplotlib.use("Agg")
+
 import seaborn as sns
 import statsmodels.api as sm
 from statsmodels.tsa.seasonal import seasonal_decompose
@@ -9,11 +14,11 @@ from statsmodels.graphics.tsaplots import plot_acf
 import plotly.express as px
 import plotly.graph_objects as go
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) 
-DATA_DIR = os.path.join(BASE_DIR, "..", "data") 
+# Define directories
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "..", "data")
 EDA_DIR = os.path.join(DATA_DIR, "eda")
-PREPROCESS_DIR = os.path.join(DATA_DIR, "preprocess")  
+PREPROCESS_DIR = os.path.join(DATA_DIR, "preprocess")
 os.makedirs(EDA_DIR, exist_ok=True)
 
 class ExploratoryDataAnalysis:
@@ -30,7 +35,7 @@ class ExploratoryDataAnalysis:
         return df
 
     def save_summary_statistics(self):
-        """Saves summary statistics and missing values"""
+        """Saves summary statistics and missing values report"""
         print("Saving summary statistics and missing values report...")
         summary_stats = self.df.describe()
         summary_stats.to_csv(os.path.join(EDA_DIR, "summary_statistics.csv"))
@@ -111,7 +116,6 @@ class ExploratoryDataAnalysis:
         print("Generating moving averages plot...")
         fig_ma = px.line(self.df, x=self.df.index, y=["close", "ma_20"], title="Moving Averages")
         fig_ma.write_html(os.path.join(EDA_DIR, "moving_averages.html"))
-        
 
     def run(self):
         """Runs all EDA steps sequentially"""

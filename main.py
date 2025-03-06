@@ -5,6 +5,7 @@ from src.load_data import DataLoader
 from src.preprocess import DataPreprocessor
 from src.forecast import Forecasting
 from src.eda import ExploratoryDataAnalysis
+import uvicorn
 
 # Define directories
 DATA_DIR = "data"
@@ -65,6 +66,11 @@ def run_pipeline():
         return {"message": "Pipeline executed, but no forecast file was found."}
 
 # Keep the original functionality when run as a script
+
+
 if __name__ == "__main__":
-    main()
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
 
