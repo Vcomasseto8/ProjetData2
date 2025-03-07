@@ -35,8 +35,10 @@ This project follows a structured ML pipeline:
 │── predict.py                  # FastAPI API for exchange rate prediction
 │── requirements.txt            # List of dependencies
 │── Dockerfile                  # Docker configuration for containerization
+│── aplip.py                      # Web app to see exchange rates
 │── docker-compose.yml          # Compose file for container orchestration
 │── .env                        # API keys for data fetching (ignored in Git)
+│── render.yaml                 # Web Service
 │── README.md                   # Project documentation
 
 
