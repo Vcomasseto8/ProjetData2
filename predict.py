@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 import os
 import pandas as pd
 
-# ✅ Make sure this is at the TOP
 app = FastAPI()
 
 FORECAST_FILE = os.path.join("data", "forecast", "best_model_forecast.csv")
