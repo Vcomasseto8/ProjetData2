@@ -9,20 +9,14 @@ RUN apt-get update && apt-get install -y \
 # Set the working directory
 WORKDIR /app
 
-# Copy the entire project (including subdirectories)
-COPY . /app/
+# Copy the entire project to the container
+COPY . .
 
-# Install dependencies first to leverage Docker's caching
+# Install dependencies
 RUN pip install --default-timeout=1000 --no-cache-dir -r requirements.txt
 
-# Ensure API keys are available
-COPY .env /app/
-
-# Run the full pipeline during the build (optional, but ensures forecast files exist)
-RUN python main.py
-
-# Expose the FastAPI/Flask port (if applicable)
+# Expose FastAPI port
 EXPOSE 8000
 
-# Command to run the API
+# Run the app
 CMD ["uvicorn", "predict:app", "--host", "0.0.0.0", "--port", "8000"]
