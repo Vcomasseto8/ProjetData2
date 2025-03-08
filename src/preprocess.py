@@ -21,14 +21,13 @@ class DataPreprocessor:
         """Loads exchange rate data, ensuring 'date' column exists and is properly formatted"""
         df = pd.read_csv(self.file_path)
 
-        # Check if 'date' exists as a column
         if "date" in df.columns:
             df["date"] = pd.to_datetime(df["date"])
             df.set_index("date", inplace=True)
         else:
             # If no 'date' column, assume the first column is the index
-            df.index = pd.to_datetime(df.iloc[:, 0])  # Convert first column to datetime
-            df.drop(df.columns[0], axis=1, inplace=True)  # Remove duplicate first column
+            df.index = pd.to_datetime(df.iloc[:, 0])  
+            df.drop(df.columns[0], axis=1, inplace=True)  
 
         df = df.sort_index()
         df.dropna(inplace=True)  # Ensure no NaN values remain

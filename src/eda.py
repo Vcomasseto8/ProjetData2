@@ -131,7 +131,6 @@ class ExploratoryDataAnalysis:
         self.plot_moving_averages()
         print("EDA completed. All visualizations saved in 'eda' directory.")
 
-# Run EDA if executed directly
 if __name__ == "__main__":
     eda = ExploratoryDataAnalysis()
     eda.run()

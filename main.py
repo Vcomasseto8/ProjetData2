@@ -67,8 +67,6 @@ def run_pipeline():
     else:
         return {"message": "Pipeline executed, but no forecast file was found."}
 
-# Keep the original functionality when run as a script
-
 
 if __name__ == "__main__":
     import uvicorn
